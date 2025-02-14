@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizManager - NextTechTitan</title>
+    <style>
+    /* --- General Styles --- */
+    body {
+        font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        background-color: #f4f4f4;
+        line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 600;
+        color: #222;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 2em;
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+    h4 {
+        font-size: 1.0em;
+        margin-bottom: 10px;
+    }
+
+    p {
+        margin-bottom: 15px;
+    }
+
+    a {
+        color: #0a84ff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        color: #0056b3;
+    }
+
+    /* --- Header --- */
+    header {
+        background: #F5F5F5;
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    header h1 {
+        
+        margin-bottom: 5px;
+        font-size: 1.8em;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 5px;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    nav a {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 6px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        white-space: nowrap;
+    }
+
+    /* Hamburger Menu */
+    #hamburger-menu {
+        display: none; /* Hide by default */
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 1001;
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: black;
+        margin: 5px 0;
+        transition: 0.3s ease;
+    }
+
+    @media (max-width: 600px) {
+    header {
+        padding: 5px;
+        flex-direction: row; /* Change to row for smaller screens */
+        justify-content: space-between; /* Distribute space between title and menu */
+        align-items: center; /* Vertically align items */
+    }
+
+    header h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+	padding-left: 5px;
+    }
+    nav {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        position: absolute;
+        top: 100%;
+        right: 0; /* Align to the right */
+        background-color: #F5F5F5;
+        width: fit-content; /* Adjust width to content */
+        align-items: flex-start; /* Align items to the right */
+        padding: 5px; /* Add some padding */
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    }
+
+    nav.show {
+        display: flex;
+    }
+    nav a {
+        width: auto; /* Remove full width */
+        text-align: right; /* Align text to the right */
+        padding: 10px;
+        display: block; /* Make each link a block */
+    }
+
+    #hamburger-menu {
+        display: block; /* Show on small screens */
+        margin-top: 0; /* Remove margin-top */
+        margin-right: 5px;
+	margin-bottom: 10px;
+        position: relative;
+    }
+
+    .container {
+        margin-top: 10px; /* Further reduced margin-top on small screens */
+        padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+    }
+}
+
+    /* --- Container and Sections --- */
+    .container {
+        max-width: 1000px;
+        margin: 10px auto; /* Reduced margin-top */
+        padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section {
+        margin-bottom: 10px; /* Reduced margin-bottom */
+    }
+
+    /* --- Expandable Content --- */
+    .expandable {
+        background: #e9ecef;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .expandable:hover {
+        background-color: #d0d0d0;
+    }
+
+    .expandable-content {
+        display: none;
+        margin-top: 5px;
+        padding-left: 20px;
+    }
+
+    /* --- Feature List --- */
+    .feature-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .feature-item {
+        flex: 1 1 45%;
+        background: #F5F5F5;
+        padding-left: 15px;
+	padding-right: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .feature-item h3 {
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+    .feature-item p {
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+    /* --- Video Container --- */
+    .video-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .video {
+        flex: 1 1 48%;
+        height: 300px;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        .video {
+            flex: 1 1 100%;
+        }
+    }
+
+    /* --- Screenshot Styles --- */
+    #screenshots {
+        text-align: left;
+    }
+
+    #screenshots h2 {
+        margin-top: 15px;
+        width: 100%;
+        text-align: left;
+    }
+
+    #screenshots h3 {
+        margin-top: 15px;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .screenshot-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+
+    .screenshot-grid img {
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        max-width: 100%;
+        display: block;
+    }
+
+    /* Adjusting different screenshot sizes and layout */
+    .phone-screenshots .screenshot-grid {
+        justify-content: center;
+    }
+
+    .phone-screenshots .screenshot-grid img {
+        flex: 0 0 calc(25% - 10px);
+        max-width: calc(25% - 10px);
+    }
+
+    .tablet-7-screenshots img,
+    .tablet-10-screenshots img,
+    .chromebook-screenshots img {
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .tablet-7-screenshots,
+    .tablet-10-screenshots,
+    .chromebook-screenshots {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Media query for smaller screens (phones) */
+    @media (max-width: 768px) {
+        .phone-screenshots .screenshot-grid img {
+            flex: 0 0 100%;
+            max-width: 300px;
+        }
+    }
+
+    /* --- Download Button --- */
+    .download-button {
+        display: block;
+        text-align: center;
+        margin: 20px auto;
+        width: fit-content;
+    }
+
+    .download-button img {
+        max-width: 200px;
+        height: auto;
+    }
+    #legal-support ul {
+    list-style: none; /* Remove bullets */
+    padding: 0; /* Remove default padding */
+}
+
+#legal-support li {
+    margin-bottom: 5px; /* Add space between list items */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+#google-play-button {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+#google-play-button img {
+    max-width: 200px;
+    height: auto;
+    margin: 40px auto;
+}
+
+    /* --- Footer --- */
+    footer {
+        background: #F5F5F5;
+        
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+    
+    <script>
+        function toggleContent(id) {
+            var content = document.getElementById(id);
+            content.style.display = (content.style.display === "none" || content.style.display === "") ? "block" : "none";
+        }
+	function toggleMenu() {
+        var nav = document.querySelector("nav");
+        nav.classList.toggle("show");
+        }
+	// Close the menu when a link is clicked
+    document.querySelectorAll('nav a').forEach(item => {
+        item.addEventListener('click', event => {
+            var nav = document.querySelector("nav");
+            nav.classList.remove("show");
+        });
+    });
+
+// Close the menu when clicking outside of it
+document.addEventListener('click', function(event) {
+    var nav = document.querySelector("nav");
+    var hamburger = document.getElementById("hamburger-menu");
+    var isClickInside = nav.contains(event.target) || hamburger.contains(event.target);
+
+    if (!isClickInside && nav.classList.contains("show")) {
+        nav.classList.remove("show");
+    }
+});
+    </script>
+</head>
+<body>
+    <header>
+        <h1>BizManager - NextTechTitan</h1>
+	<button id="hamburger-menu" onclick="toggleMenu()">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    	</button>
+        <nav>
+            <a href="#overview">Overview</a>
+            <a href="#features">Features</a>
+            <a href="#screenshots">Screenshots</a>
+            <a href="#videos">Videos</a>
+            <a href="#faq">FAQ</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="overview" class="section">
+            <h3>BizManager: Your All-in-One Business Management Solution</h3>
+	    <p>BizManager is a powerful, offline-first business management app designed to simplify the complexities of running a small to medium-sized business. We understand the challenges of daily operations, from managing inventory and tracking sales to handling credit and generating reports. That's why BizManager offers a comprehensive suite of tools to streamline your workflow, improve accuracy, and provide you with the insights you need to make informed decisions.</p>
+	    <p>With BizManager, you can effortlessly manage your product catalog, track stock levels, record sales transactions, handle discounts, and even account for damaged or stolen goods. Our dynamic pricing feature allows you to switch between standard and real-time prices, ensuring your transactions always reflect the most accurate values. The app also provides detailed daily performance summaries, comprehensive transaction history, and flexible settings to customize your experience.</p>
+            <h3>Our Mission</h3>
+            <p>✓ To empower businesses with intuitive, powerful, and efficient digital solutions that simplify management and drive success.</p>
+            <h3>Our Vision</h3>
+            <p>✓ To be a global leader in technological innovation, providing reliable and efficient digital tools that transform the way businesses operate.</p>
+        </section>
+
+        <section id="features" class="section">
+    <h3>Key Features</h3>
+    <div class="feature-list">
+        <div class="feature-item">
+            <h4>Product and Variation Management</h4>
+            <p>🏷️ View all your product categories, products, and their respective variations or quantity levels. Each product variation displays key details, including current stock levels, unit prices, unit costs, and supplier information if entered.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Low-Stock Notifications</h4>
+            <p>🏷️ Stay on top of low-stock notifications, which appear on the notification screen whenever a product variation falls below a threshold value that you specified.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Sales Recording</h4>
+            <p>🏷️ Record sales by selecting the corresponding product level that the customer has chosen and specify the quantity. Use the filter option to search for specific product levels.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Order Summary</h4>
+            <p>🏷️ View a comprehensive list of the entire order in the Summary section. Navigate back to the Sell screen to make changes if necessary, and return to the Summary screen to see the updated order.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Dynamic Pricing</h4>
+            <p>🏷️ Decide on the pricing model to apply, and the subtotals will be computed for each product. The app dynamically calculates subtotals and totals when you adjust prices, no matter the size of the order.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Discount Management</h4>
+            <p>🏷️ Specify a discount to offer by entering the percentage. The app also supports recording different payment methods, such as cash, credit, or a combination of both.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Damaged/Stolen Goods Recording</h4>
+            <p>🏷️ Record damaged, stolen, or missing goods by adjusting the real-time price for each item to a value that accounts for the loss. This ensures accurate records even when goods are not sold at their original price.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Offline-First Design</h4>
+            <p>🏷️ The app is designed to work offline, with all data stored on your device. This ensures security and control over your data, but it also means that you should periodically download and keep reports for backup purposes.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Multi-User Support</h4>
+            <p>🏷️ For complex shops or stores, different people can download the app and manage specific products and their variations. Each person can then download reports and send them to a central person for compilation.</p>
+        </div>
+	<div class="feature-item">
+    <h4>Other Features</h4>
+    <p>🏷️ There are many more features to discover! To explore all the capabilities of BizManager, please follow the guides provided within the app. You can access them by clicking the Docs icon at the bottom of each screen.</p>
+</div>
+    </div>
+</section>
+
+        <section id="videos" class="section">
+            <h3>Video Guides</h3>
+            <div class="video-container">
+                <iframe class="video" src="https://www.youtube.com/embed/ojgL6UphIu0" allowfullscreen></iframe>
+                <iframe class="video" src="https://www.youtube.com/embed/2rG4xxxHGVs" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section id="screenshots" class="section">
+    <h3>App Screenshots (How the App Appears on Various Devices)</h3>
+
+    <div class="phone-screenshots">
+        <h3>1. Phone Screenshots</h3>
+        <div class="screenshot-grid">
+            <img src="ScreenShot1.png" alt="Phone1">
+            <img src="ScreenShot2.png" alt="Phone2">
+            <img src="ScreenShot3.png" alt="Phone3">
+            <img src="ScreenShot4.png" alt="Phone4">
+            <img src="ScreenShot5.png" alt="Phone5">
+            <img src="ScreenShot6.png" alt="Phone6">
+            <img src="ScreenShot7.png" alt="Phone7">
+            <img src="ScreenShot8.png" alt="Phone8">
+        </div>
+    </div>
+
+    <div class="tablet-7-screenshots">
+        <h3>2. Tablet (7-inch) Screenshots</h3>
+        <div class="screenshot-grid">
+            <img src="7-inch 1.png" alt="Tablet1">
+            <img src="7-inch 2.png" alt="Tablet2">
+            <img src="7-inch 3.png" alt="Tablet3">
+            <img src="7-inch 4.png" alt="Tablet4">
+            <img src="7-inch 5.png" alt="Tablet5">
+            <img src="7-inch 6.png" alt="Tablet6">
+            <img src="7-inch 7.png" alt="Tablet7">
+            <img src="7-inch 8.png" alt="Tablet8">
+        </div>
+    </div>
+
+    <div class="tablet-10-screenshots">
+        <h3>3. Tablet (10-inch) Screenshots</h3>
+        <div class="screenshot-grid">
+            <img src="10-inch 1.png" alt="Tablet9">
+            <img src="10-inch 2.png" alt="Tablet10">
+            <img src="10-inch 3.png" alt="Tablet11">
+            <img src="10-inch 4.png" alt="Tablet12">
+            <img src="10-inch 5.png" alt="Tablet13">
+            <img src="10-inch 6.png" alt="Tablet14">
+            <img src="10-inch 7.png" alt="Tablet15">
+            <img src="10-inch 8.png" alt="Tablet16">
+        </div>
+    </div>
+
+    <div class="chromebook-screenshots">
+        <h3>4. Chromebook Screenshots</h3>
+        <div class="screenshot-grid">
+            <img src="Chromebook 1.png" alt="Chromebook1">
+            <img src="Chromebook 2.png" alt="Chromebook2">
+            <img src="Chromebook 3.png" alt="Chromebook3">
+            <img src="Chromebook 4.png" alt="Chromebook4">
+            <img src="Chromebook 5.png" alt="Chromebook5">
+            <img src="Chromebook 6.png" alt="Chromebook6">
+            <img src="Chromebook 7.png" alt="Chromebook7">
+            <img src="Chromebook 8.png" alt="Chromebook8">
+        </div>
+    </div>
+</section>
+
+        <section id="faq" class="section">
+    <h3>Frequently Asked Questions</h3>
+    <div class="expandable" onclick="toggleContent('faq1')">💡 How do I set up the app? (Click to reveal)</div>
+    <div id="faq1" class="expandable-content">
+        <p>To set up the BizManager app, follow these steps:</p>
+        <ol>
+            <li>Download and install the app from the Google Play Store.</li>
+            <li>Open the app and follow the on-screen instructions and guides to understand how the features can be used. You can also watch the provided YouTube tutorials.</li>
+            <li>Once you are confident, you can start adding your products and managing your shop or store. For this app, there is no need to create an account.</li>
+        </ol>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq2')">💡 Can I use BizManager on multiple devices? (Click to reveal)</div>
+    <div id="faq2" class="expandable-content">
+        <p>No, you cannot use the app on multiple devices because your data is handled and stored locally. Each device will store different data</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq3')">💡 Is my data secure with BizManager? (Click to reveal)</div>
+    <div id="faq3" class="expandable-content">
+        <p>Yes, as per our privacy policy, the app does not collect any form of user data. Even the developer does not have access to the data stored on your device.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq4')">💡 How do I contact support? (Click to reveal)</div>
+    <div id="faq4" class="expandable-content">
+        <p>You can contact our support team via email at <a href="mailto:mathiaskwi900@gmail.com">mathiaskwi900@gmail.com</a> or by phone at +256781582777.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq5')">💡 How does the "Today" section work? (Click to reveal)</div>
+    <div id="faq5" class="expandable-content">
+        <p>The "Today" section provides a real-time summary of your daily business performance. It tracks cash sales, credit sales, and discounts given from midnight (00:00) to the end of the day (23:59). It also lists all transactions made during the day, including payment type, amount, and time. At the end of the day, all values reset to zero.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq6')">💡 How do I handle credit payments in the "Today" section? (Click to reveal)</div>
+    <div id="faq6" class="expandable-content">
+        <p>When a buyer who took goods on credit earlier in the day later pays some or all of the credit, the existing cash and credit totals will be adjusted. If a buyer settles credit from a previous day, the cash paid will be displayed separately below the current day's totals to avoid double counting.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq7')">💡 What is the difference between standard and real-time pricing? (Click to reveal)</div>
+    <div id="faq7" class="expandable-content">
+        <p>The standard price is a fixed price for a product variation, ideal for items with stable pricing. The real-time price is a flexible value that can be adjusted frequently for products with fluctuating prices. You can switch between these pricing models in the Summary Section during a transaction.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq8')">💡 How do I change prices during a transaction? (Click to reveal)</div>
+    <div id="faq8" class="expandable-content">
+        <p>To modify prices during a transaction, use the bottom navigation bar to quickly switch to the Pricing section, make adjustments, and return to finalize the sale seamlessly.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq9')">💡 What currency options are available? (Click to reveal)</div>
+    <div id="faq9" class="expandable-content">
+        <p>The app supports a variety of currencies. After selecting a currency in the Settings section, all financial data, transaction records, product prices, and reports will adjust to reflect the chosen currency symbol and conventions.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq10')">💡 What number formats are available? (Click to reveal)</div>
+    <div id="faq10" class="expandable-content">
+        <p>The app offers several number formats:</p>
+        <ul>
+            <li><strong>Currency Format:</strong> Displays monetary values with currency symbols (e.g., $10,000.00).</li>
+            <li><strong>Compact Format:</strong> Abbreviates large numbers for easier readability (e.g., 1.5K or 2.3M).</li>
+            <li><strong>Default Format:</strong> Displays numbers in a standard, region-specific format (e.g., 10,000.50).</li>
+        </ul>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq11')">💡 What is "Skip Authentication" and when should I use it? (Click to reveal)</div>
+    <div id="faq11" class="expandable-content">
+        <p>"Skip Authentication" allows you to temporarily bypass the login requirement for faster access. It's convenient for frequent use but poses a security risk if the device is shared or misplaced. It's advisable to disable it after setting up your PIN, security question, and backup code.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq12')">💡 What happens if I forget my PIN, security question answer, or backup code? (Click to reveal)</div>
+    <div id="faq12" class="expandable-content">
+        <p>If you forget your PIN and don't have or have forgotten the backup code or security question answer, you will lose access to the app. Since the app is mainly offline, there is no online recovery mechanism. The only way to regain access is to uninstall and reinstall the app, which will result in data loss. It is therefore advisable that you keep your PIN, Security Question, Security Answer, and/or Backup Code in a secure place.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq13')">💡 How can I share transaction details? (Click to reveal)</div>
+    <div id="faq13" class="expandable-content">
+        <p>In the Transaction History section, each transaction has a Share icon. You can share transaction details via email, messaging apps, or other platforms. This is useful for providing buyers with digital copies, sharing summaries with accountants, or keeping backup records.</p>
+    </div>
+    <div class="expandable" onclick="toggleContent('faq14')">💡 How do I cancel a transaction? (Click to reveal)</div>
+    <div id="faq14" class="expandable-content">
+        <p>To cancel a transaction, go to the Transaction History section and click the cancel icon for the transaction you want to cancel. A dialog will appear, and you can confirm the cancellation. If you're canceling the entire transaction, leave the prefilled values intact and fill all the quantity fields as instructed.</p>
+    </div>
+</section>
+
+        <section id="legal-support" class="section">
+    <h3>Legal & Support</h3>
+    <p><a href="https://nexttechtitan.github.io/BizManager_Privacy_Policy/">📄 View Our Privacy Policy</a></p>
+    <ul>
+        <li>✉️ Email: <a href="mailto:mathiaskwi900@gmail.com">mathiaskwi900@gmail.com</a></li>
+        <li>📞 Phone: +256781582777</li>
+    </ul>
+</section>
+
+        <a id="google-play-button" href="https://play.google.com/store/apps/details?id=com.nexttechtitan.bizmanager" class="download-button">
+    <img alt="Get it on Google Play" src="GetItOnGooglePlay.png" />
+</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 NextTechTitan. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
